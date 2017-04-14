@@ -26,76 +26,89 @@ package br.senac.tads4.cakeweb.common.entidade;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  *
  * @author fernando.tsuda
  */
+@Entity
 public class Categoria implements Serializable {
 
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_CATEGORIA", nullable = false)
+    private Integer id;
 
-  private String nome;
+    @Column(name = "NM_CATEGORIA", length = 100, nullable = false, unique = true)
+    private String nome;
 
-  private List<Produto> produtos;
+    @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
+    private List<Produto> produtos;
 
-  public Categoria() {
+    public Categoria() {
 
-  }
-
-  public Categoria(Integer id, String nome) {
-    this.id = id;
-    this.nome = nome;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public List<Produto> getProdutos() {
-    return produtos;
-  }
-
-  public void setProdutos(List<Produto> produtos) {
-    this.produtos = produtos;
-  }
-
-  @Override
-  public String toString() {
-    return "Categoria{" + "id=" + id + ", nome=" + nome + '}';
-  }
-
-  @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 47 * hash + Objects.hashCode(this.id);
-    return hash;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
     }
-    if (getClass() != obj.getClass()) {
-      return false;
+
+    public Categoria(Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
-    final Categoria other = (Categoria) obj;
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
+
+    public Integer getId() {
+        return id;
     }
-    return true;
-  }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
+    @Override
+    public String toString() {
+        return "Categoria{" + "id=" + id + ", nome=" + nome + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Categoria other = (Categoria) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
 }

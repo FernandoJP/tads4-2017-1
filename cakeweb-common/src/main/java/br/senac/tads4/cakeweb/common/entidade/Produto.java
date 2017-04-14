@@ -23,116 +23,155 @@
  */
 package br.senac.tads4.cakeweb.common.entidade;
 
+import static br.senac.tads4.cakeweb.common.entidade.ImagemProduto_.produto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.criteria.Fetch;
 
 /**
  *
  * @author fernando.tsuda
  */
+@Entity
+@Table(name = "TB_PRODUTO")
 public class Produto implements Serializable {
 
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_PRODUTO")
+    private Long id;
 
-  private String nome;
+    @Column(name = "NM_PRODUTO", length = 100, nullable = false)
+    private String nome;
 
-  private String descricao;
+    @Column(name = "DS_PRODUTO", length = 1000, nullable = false)
+    private String descricao;
 
-  private BigDecimal preco;
+    @Column(name = "VL_PRODUTO", precision = 12, scale = 2, nullable = false)
+    private BigDecimal preco;
 
-  private Date dtCadastro;
+    @Column(name = "DT_CADASTRO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtCadastro;
 
-  private List<Categoria> categorias;
+    @ManyToMany()
+    @JoinTable(name = "TB_PRODUTO_CATEGORIA",
+            joinColumns = {
+                @JoinColumn(name = "ID_PRODUTO")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "ID_CATEGORIA")
+            }
+    )
 
-  private List<ImagemProduto> imagens;
-  
-  private String observacoes;
+    @OneToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
+    private List<Categoria> categorias;
 
-  //private List<ItemCompra> itensCompra;
-  public Produto() {
+    private List<ImagemProduto> imagens;
 
-  }
+    @Transient
+    private String observacoes;
 
-  public Produto(Long id, String nome, String descricao, BigDecimal preco, Date dtCadastro) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.preco = preco;
-    this.dtCadastro = dtCadastro;
-  }
+    //private List<ItemCompra> itensCompra;
+    public Produto() {
 
-  public Produto(Long id, String nome, String descricao, BigDecimal preco, Date dtCadastro, List<ImagemProduto> imagens, List<Categoria> categorias) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.preco = preco;
-    this.dtCadastro = dtCadastro;
-    this.imagens = imagens;
-    this.categorias = categorias;
-  }
+    }
 
-  public Produto(long i, String string, String string0, BigDecimal bigDecimal) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
+    public Produto(Long id, String nome, String descricao, BigDecimal preco, Date dtCadastro) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.dtCadastro = dtCadastro;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public Produto(Long id, String nome, String descricao, BigDecimal preco, Date dtCadastro, List<ImagemProduto> imagens, List<Categoria> categorias) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.dtCadastro = dtCadastro;
+        this.imagens = imagens;
+        this.categorias = categorias;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public Produto(long i, String string, String string0, BigDecimal bigDecimal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-  public String getNome() {
-    return nome;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public String getDescricao() {
-    return descricao;
-  }
+    public String getNome() {
+        return nome;
+    }
 
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
-  }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-  public BigDecimal getPreco() {
-    return preco;
-  }
+    public String getDescricao() {
+        return descricao;
+    }
 
-  public void setPreco(BigDecimal preco) {
-    this.preco = preco;
-  }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-  public Date getDtCadastro() {
-    return dtCadastro;
-  }
+    public BigDecimal getPreco() {
+        return preco;
+    }
 
-  public void setDtCadastro(Date dtCadastro) {
-    this.dtCadastro = dtCadastro;
-  }
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
 
-  public List<Categoria> getCategorias() {
-    return categorias;
-  }
+    public Date getDtCadastro() {
+        return dtCadastro;
+    }
 
-  public void setCategorias(List<Categoria> categorias) {
-    this.categorias = categorias;
-  }
+    public void setDtCadastro(Date dtCadastro) {
+        this.dtCadastro = dtCadastro;
+    }
 
-  public List<ImagemProduto> getImagens() {
-    return imagens;
-  }
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
 
-  public void setImagens(List<ImagemProduto> imagens) {
-    this.imagens = imagens;
-  }
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public List<ImagemProduto> getImagens() {
+        return imagens;
+    }
+
+    public void setImagens(List<ImagemProduto> imagens) {
+        this.imagens = imagens;
+    }
 //
 //  public List<ItemCompra> getItensCompra() {
 //    return itensCompra;
@@ -142,31 +181,31 @@ public class Produto implements Serializable {
 //    this.itensCompra = itensCompra;
 //  }
 
-  @Override
-  public String toString() {
-    return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", dtCadastro=" + dtCadastro + ", categorias=" + categorias + ", imagens=" + imagens + '}';
-  }
+    @Override
+    public String toString() {
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", dtCadastro=" + dtCadastro + ", categorias=" + categorias + ", imagens=" + imagens + '}';
+    }
 
-  @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 89 * hash + Objects.hashCode(this.id);
-    return hash;
-  }
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Produto other = (Produto) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Produto other = (Produto) obj;
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
-  }
 
 }
